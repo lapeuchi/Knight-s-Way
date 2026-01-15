@@ -2,18 +2,12 @@ using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
 {
-    private UnitModel playerModel;
+    private PlayerUnit playerModel;
+    private MonsterUnit mobModel;
 
-    private UnitModel mobModel;
-
-    private void Start()
-    {
-        
-    }
-    
     private void Update()
     {
-        Attack(); 
+        Attack();
     }
 
     private void Attack()
@@ -23,12 +17,12 @@ public class BattleSystem : MonoBehaviour
         
         if (playerAttackable)
         {
-            mobModel.hp -= playerModel.hp;
+            // mobModel.hp -= playerModel.hp;
         }
 
         if (mobAttackable)
         {
-            playerModel.hp -= mobModel.hp;
+            // playerModel.hp -= mobModel.hp;
         }
     }
 
