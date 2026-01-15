@@ -1,26 +1,21 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    PlayerUnit unit;
+    private Joystick joystick; 
 
-    [SerializeField]
-    private Joystick joystick;
-
-    private void Update()
-    { 
-        Vector2 moveDir = new Vector2(joystick.Horizontal, joystick.Vertical);
-        if (moveDir.sqrMagnitude > 0f)
-        {
-            Move(moveDir);
-        }
-        
-    }
-
-
-    public void Move(Vector3 dir)
+    public Vector3 MoveDir
     {
-        transform.position += dir * unit.MovementSpeed * Time.deltaTime;
+        get
+        {
+            Vector3 moveDir = joystick.Direction;
+
+            return moveDir;
+            
+        }   
     }
+
+    
 }

@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74dd1b856140641339657e55173242d6, type: 3}
-  m_Name: UnitModel
-  m_EditorClassIdentifier: Assembly-CSharp::UnitModel
-  hp: 0
-  atk: 0
-  atkSpeed: 0
+  m_Script: {fileID: 11500000, guid: 04c06025652464cac92c431cf1ed96bf, type: 3}
+  m_Name: PlayerStat
+  m_EditorClassIdentifier: Assembly-CSharp::UnitSO
+  hp: 100
+  atk: 10
+  atkSpd: 1
+  movementSpeed: 1
