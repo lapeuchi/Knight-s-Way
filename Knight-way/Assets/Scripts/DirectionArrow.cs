@@ -1,19 +1,37 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DirectionArrow : MonoBehaviour
 {
     [SerializeField]
-    private PlayerUnit player;
+    private PlayerUnit playerUnit;
+
+    [SerializeField]
+    private SpriteRenderer arrowSprite;
+
+    [SerializeField]
+    private float fadeSpeed;
+
+    float _targetAlpha;
+    float _curAlpha;
 
     private void Start()
     {
-        player.moveUpdateCallback += OnMove;
-        player.onChangedAnimState += Fade;
+        playerUnit.moveUpdateCallback += OnMoveUpdated;
+        playerUnit.onChangedAnimState += Fade;
     }
 
-    private void OnMove(Vector2 dir)
+    private void Update()
     {
+        _curAlpha = Mathf.Lerp(_curAlpha, _targetAlpha, fadeSpeed * Time.deltaTime);
+        arrowSprite.color = new Color(arrowSprite.color.r, arrowSprite.color.g, arrowSprite.color.b, _curAlpha);
+    }
+
+    private void OnMoveUpdated()
+    {
+        Vector2 dir = playerUnit.RecentDirection;
+
         // 2. 아크탄젠트로 각도(라디안) 구하고 -> 도(Degree)로 변환
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
@@ -25,36 +43,14 @@ public class DirectionArrow : MonoBehaviour
     {
         if (animState == Unit.EAnimState.Move)
         {
-            
+            _targetAlpha = 1;
         }
         else
         {
-            
+            _targetAlpha = 0;
         }
     }
 
-    private Coroutine coFade;
-    private float fadeSpeed = 2f;
-    private IEnumerator CoFadeIn()
-    {
-        Color color = new Color(1,1,1,1);
-       
-        while (color.a > 0)
-        {
-            color.a -= 2f * Time.deltaTime;
-            yield return null;
-        }
-    }
-
-    private IEnumerator CoFadeOut()
-    {
-        Color color = new Color(1,1,1,0);
-   
-        while (color.a < 1)
-        {
-            
-            yield return null;
-        }
-    }
+    
     
 }

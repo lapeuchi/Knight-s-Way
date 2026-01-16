@@ -5,7 +5,6 @@ public class UnitSO : ScriptableObject
 {
     public float hp;
     public float atk;
-    public float atkSpd;
     public float movementSpeed;
 
 }
