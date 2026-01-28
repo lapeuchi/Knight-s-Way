@@ -1,128 +1,30 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
-public abstract class Unit : MonoBehaviour
+public class Unit : MonoBehaviour
 {
     [SerializeField]
-    private UnitSO unitStat;
-
-    private float _movementSpeed;
-    private float _attackPoint;
-    private float _healthPoint;
-
-    public float MovementSpeed => _movementSpeed;
-    public float AttackPoint => _attackPoint;
-    public float HealthPoint => _healthPoint;
-    
-    public enum EAnimState { None, Idle, Move, Cast, Die, }
-    
-    private EAnimState _animState;
-    public EAnimState AnimState
-    {
-        get => _animState;
-        set => SetAnimState(value);
-    }
-
-    public event UnityAction<EAnimState> onChangedAnimState;
-    public event UnityAction moveUpdateCallback;
-
+    private float _hp;
     [SerializeField]
-    protected Animator animator;
+    private float _atk;
+    [SerializeField]
+    private float _speed;
 
-    protected virtual void StartIdle()
-    {
-        animator.CrossFade("Idle", 0.1f);
-    }
-    
-    protected virtual void StartMove()
-    {
-        animator.CrossFade("Move", 0.1f);
-    }
+    public float Speed => _speed;
 
-    protected virtual void StartDie()
+    public bool IsDead;
+    // 유닛의 행동 로직 (코루틴)
+    public IEnumerator TakeTurn()
     {
-        animator.CrossFade("Die", 0.1f);
-    }
+        Debug.Log($"👉 {name} (속도 {Speed})의 턴!");
 
-    protected virtual void StartCast()
-    {
+        // 여기에 공격, 스킬, 방어 등의 로직이 들어갑니다.
+        // 예: 플레이어라면 UI 입력을 기다리고, 적이라면 AI 로직 실행
         
-    }
+        // 시뮬레이션: 공격 애니메이션 시간(1초) 만큼 대기
+        yield return new WaitForSeconds(1.0f); 
 
-    protected abstract void UpdateIdle();    
-
-    protected abstract void UpdateMove();
-
-    protected abstract void UpdateCast();
-
-    protected abstract void UpdateDie();
-
-
-    protected virtual void Awake()
-    {
-        _movementSpeed = unitStat.movementSpeed;
-        _healthPoint = unitStat.hp;
-        _attackPoint = unitStat.atk;
-
-        AnimState = EAnimState.Idle;
-    }
-    
-    protected virtual void Update()
-    { 
-        switch (AnimState)
-        {
-            case EAnimState.Idle:
-                UpdateIdle();
-            break;
-            case EAnimState.Move:
-                UpdateMove();
-                moveUpdateCallback?.Invoke();
-            break;
-            case EAnimState.Cast:
-                UpdateCast();
-            break;
-            case EAnimState.Die:
-                UpdateDie();
-            break;
-        }
-
-        
-    }
-
-    private void SetAnimState(EAnimState state)
-    {
-        switch (state)
-        {
-            case EAnimState.Idle:
-                StartIdle();
-            break;
-            case EAnimState.Move:
-                StartMove();
-            break;
-            case EAnimState.Cast:
-                StartCast();
-            break;
-            case EAnimState.Die:
-                StartDie();
-            break;
-        }
-        
-        _animState = state;
-        
-        onChangedAnimState?.Invoke(state);
-
-        
-    }
-
-    public void TakeDamage(float damage)
-    {
-        _healthPoint -= damage;
-        Debug.Log($"hit! {gameObject.name} {_healthPoint}");
-        if (_healthPoint <= 0)
-        {
-            Debug.Log($"die! {gameObject.name} {_healthPoint}");
-            AnimState = EAnimState.Die;
-        }
+        Debug.Log($"{name} 행동 종료.");
     }
 
 }
